@@ -1,0 +1,84 @@
+.long-loginContainer {
+      min-width: 320px;
+      max-width: 400px;
+      height: auto;
+      top: 20%;
+      left: 0;
+      right: 0;
+      margin: auto;
+      position: absolute;
+    width:100%;
+}
+.logo{
+    width:100px;
+    margin-left:37%;
+    margin-right:37%;
+    position: absolute;
+    margin-top:-45px;
+}
+.Main-Container{
+ width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    left: 0px; 
+    top: 0px; 
+    z-index: -1;
+}
+.class{
+   position: absolute;
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(1px);
+    width:100%;
+    height: 100%;
+    -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+}
+.long-paper {
+    padding: 20px;
+    overflow: auto;
+
+}
+.long-buttonsDiv {
+    text-align: center;
+    color:darkcyan;
+    margin:-7px;
+    -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+    text-shadow: 1px 1px whitesmoke;
+}
+.long-flatButton {
+    color: #9E9E9E !important;
+}
+
+.long-checkRemember {     
+    float: left;
+    max-width: 180px;
+    padding-top: 5px;
+}
+.long-labelStyle{
+    color: #9E9E9E !important;
+}
+
+.long-iconStyle {
+    color: #9E9E9E !important;
+    border-color: #9E9E9E !important;
+    fill: #9E9E9E !important;
+}
+
+.long-loginBtn {
+    float: right;
+    background-color: #9E9E9E !important;
+}
+
+.long-btn {
+    background: '#4f81e9';
+    color: white;
+    padding: 7px;
+    border-radius: 2px;
+    margin: 2px;
+    font-size: 13;
+}
+.long-btnSpan {
+    margin-left: 5px;
+}

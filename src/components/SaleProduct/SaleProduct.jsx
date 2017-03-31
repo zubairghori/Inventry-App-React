@@ -1,0 +1,162 @@
+import React, { Component,PropTypes } from 'react';
+import styles from './SaleProductStyles';
+import * as MUI from 'material-ui'
+import {Link} from 'react-router';
+import Formsy from 'formsy-react';
+import { FormsyText,FormsyDate,FormsySelect } from 'formsy-material-ui/lib';
+
+
+class SaleProduct extends Component {
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+  constructor(props){
+    super();
+    console.log("component props ",props);
+    this.state = {
+        canSubmit:false,
+        snackbarOpen: false
+    }
+    
+    this.enableButton = this.enableButton.bind(this);
+    this.disableButton = this.disableButton.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.notifyFormError = this.notifyFormError.bind(this);
+  }
+
+  errorMessages = {
+    wordsError: "Please only use letters",
+    numericError: "Please provide a number"
+  }
+  
+  enableButton() {
+    this.setState({
+      canSubmit: true,
+    });
+  }
+
+  disableButton() {
+    this.setState({
+      canSubmit: false,
+    });
+  }
+  componentWillMount(){
+    this.props.getStoreList(this.props.authUser.data.token);  
+    this.props.getProductList(this.props.authUser.data.token);
+  }
+  submitForm(data) {
+    console.log("sale details object ",data);
+    data.date = data.date;
+    data.storeKey = data.store.split("_")[0];
+    data.store =  data.store.split("_")[1];
+
+    data.productKey = data.product.split("_")[0];
+    data.product =  data.product.split("_")[1];
+
+    data.quantity = parseInt(data.quantity,10);
+    data.unitPrice = parseInt(data.unitPrice,10);
+
+    console.log("sale details object after ",data);
+
+    this.props.addSaleDetails(data,this.props.authUser.data.token);
+    this.setState({snackbarOpen:true});
+    
+  }
+
+  notifyFormError(data) {
+    console.error('Form error:', data);
+  }
+
+  render() {
+    return (
+      <div style={styles.saleProductContainer}>
+        <MUI.Paper style={styles.paper}>
+          <h3 style={styles.title}>Add Sales Details</h3>
+          <MUI.Divider/>
+          <Formsy.Form
+            onValid={this.enableButton}
+            onInvalid={this.disableButton}
+            onValidSubmit={this.submitForm}
+            onInvalidSubmit={this.notifyFormError}>
+
+            <FormsySelect
+              name="store"
+              required
+              floatingLabelText="Store"
+              fullWidth={true}
+            >
+             {
+                this.props.storeList.map(store=>{
+                  return store.map(data => {return <MUI.MenuItem key={data.id} value={data.id+'_'+data.storeName} primaryText={data.storeName} />})
+                })
+              }
+            </FormsySelect>
+            
+            <FormsySelect
+              name="product"
+              required
+              floatingLabelText="Product"
+              fullWidth={true}
+            >
+               {
+                this.props.productList.map(product=>{
+                  return product.map(data=>{return <MUI.MenuItem value={data.id+'_'+data.name} primaryText={data.name} key={data.id} />})
+                })
+              }
+            </FormsySelect>
+
+            <FormsyDate
+              name="date"
+              required
+              floatingLabelText="Sale Date"
+              fullWidth={true}
+            />
+
+            <FormsyText
+              name="quantity"
+              validations="isNumeric"
+              validationError={this.errorMessages.numericError}
+              required
+              hintText="Quantity"
+              floatingLabelText="Quantity"
+              fullWidth={true}
+            />
+
+            <FormsyText
+              name="unitPrice"
+              validations="isNumeric"
+              validationError={this.errorMessages.numericError}
+              required
+              hintText="Unit Price"
+              floatingLabelText="Unit Price"
+              fullWidth={true}
+            />
+
+          <div style={styles.buttons}>
+            <Link to="/">
+              <MUI.RaisedButton label="Cancel"/>
+            </Link>
+
+            <MUI.RaisedButton label="Save"
+                          style={styles.saveButton}
+                          onTouchTap={this.handleSave}
+                          primary={true}
+                          type="submit"
+                          disabled={!this.state.canSubmit}/>
+          </div>
+        </Formsy.Form>
+
+          <div style={styles.clear}/>
+        </MUI.Paper>
+        <MUI.Snackbar
+          open={this.state.snackbarOpen}
+          message="Sale Detail Added Successfuly"
+          autoHideDuration={3000}
+        />
+      </div>
+    );
+  }
+}
+
+export default SaleProduct;
